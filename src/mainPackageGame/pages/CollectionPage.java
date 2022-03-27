@@ -1,4 +1,4 @@
-package mainPackageGame;
+package mainPackageGame.pages;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +16,13 @@ public class CollectionPage extends JFrame {
     private JPanel contentPane;
 
     public CollectionPage(Connection connection, String username) {
+
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 450);
-        setLocation(700,300);
+        setBounds(100, 100, 800, 600);
+        setLocation(550,200);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        //contentPane.setBackground(Color.yellow);
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
@@ -84,19 +84,16 @@ public class CollectionPage extends JFrame {
         contentPane.add(labelQuantElectricityType);
 
         JButton buttonHomePage = new JButton("Home page");
-        buttonHomePage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    dispose();
+        buttonHomePage.addActionListener(e -> {
+            try {
+                dispose();
 
-                    HomePage hpage = new HomePage(connection,username);
+                HomePage hpage = new HomePage(connection,username);
 
-                    hpage.show();
+                hpage.show();
 
-                } catch (Exception e1){
-                    System.out.println(e1.getMessage());
-                }
+            } catch (Exception e1){
+                System.out.println(e1.getMessage());
             }
         });
         buttonHomePage.setFont(getFontBySize(20));
@@ -104,8 +101,8 @@ public class CollectionPage extends JFrame {
         contentPane.add(buttonHomePage);
 
         JLabel labelBackground = new JLabel("");
-        labelBackground.setIcon(new ImageIcon(CollectionPage.class.getResource("/mainPackageGame/images/chinpokomonBackground.jpg")));        
-        labelBackground.setBounds(-25, 0, 655, 420);
+        labelBackground.setIcon(new ImageIcon(LoginPage.class.getResource("/mainPackageGame/images/chinpokomonBackground.jpg")));
+        labelBackground.setBounds(-106, -97, 946, 668);
         contentPane.add(labelBackground);
 
     }

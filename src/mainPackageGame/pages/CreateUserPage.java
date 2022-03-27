@@ -1,4 +1,4 @@
-package mainPackageGame;
+package mainPackageGame.pages;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,10 +19,11 @@ public class CreateUserPage extends JFrame {
 
 
     public CreateUserPage(Connection connection) {
+
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 450);
-        setLocation(700,300);
+        setBounds(100, 100, 800, 600);
+        setLocation(550,200);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -50,43 +51,41 @@ public class CreateUserPage extends JFrame {
         contentPane.add(textFieldPassword);
 
         JButton buttonCreateUser = new JButton("CreateUser");
-        buttonCreateUser.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String usernameToCompareFromDatabase = textFieldUser.getText();
-                    String passwordToCompareFromDatabase = textFieldPassword.getText();
+        buttonCreateUser.addActionListener(e -> {
+            try {
+                String usernameToCompareFromDatabase = textFieldUser.getText();
+                String passwordToCompareFromDatabase = textFieldPassword.getText();
 
-                    String sql = "SELECT * FROM userslogin WHERE name='"+usernameToCompareFromDatabase+"'";
-                    ResultSet rs = getResultSetFromStatement(sql, connection);
+                String sql = "SELECT * FROM userslogin WHERE name='"+usernameToCompareFromDatabase+"'";
+                ResultSet rs = getResultSetFromStatement(sql, connection);
 
-                    if (rs.next()) {
-                        JOptionPane.showMessageDialog(null, "Username already existing");
+                if (rs.next()) {
+                    JOptionPane.showMessageDialog(null, "Username already existing");
 
-                        textFieldPassword.setText("");
-                        textFieldUser.setText("");
+                    textFieldPassword.setText("");
+                    textFieldUser.setText("");
 
-                    } else {
-                        String createUser = "" +
-                                "CALL createUserAndSetTo0Types("+
-                                '"'+textFieldUser.getText()+'"'+","+
-                                '"'+textFieldPassword.getText()+'"'+
-                                ")";
-
-
-                        insertUsersStatement(createUser, connection);
-
-                        JOptionPane.showMessageDialog(null, "Username created");
-
-                        dispose();
-
-                        LoginPage loginPage = new LoginPage();
-                        loginPage.show();
-                    }
+                } else {
+                    String createUser = "" +
+                            "CALL createUserAndSetTo0Types("+
+                            '"'+usernameToCompareFromDatabase+'"'+","+
+                            '"'+passwordToCompareFromDatabase+'"'+
+                            ")";
 
 
-                } catch (Exception e1){
-                    System.out.println(e1.getMessage());
+                    insertUsersStatement(createUser, connection);
+
+                    JOptionPane.showMessageDialog(null, "Username created");
+
+                    dispose();
+
+                    LoginPage loginPage = new LoginPage();
+                    loginPage.show();
                 }
+
+
+            } catch (Exception e1){
+                System.out.println(e1.getMessage());
             }
         });
         buttonCreateUser.setFont(getFontBySize(20));
@@ -94,19 +93,17 @@ public class CreateUserPage extends JFrame {
         contentPane.add(buttonCreateUser);
 
         JButton buttonResetData = new JButton("Reset data");
-        buttonResetData.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                textFieldPassword.setText("");
-                textFieldUser.setText("");
-            }
+        buttonResetData.addActionListener(e -> {
+            textFieldPassword.setText("");
+            textFieldUser.setText("");
         });
         buttonResetData.setFont(getFontBySize(20));
         buttonResetData.setBounds(329, 266, 206, 64);
         contentPane.add(buttonResetData);
 
         JLabel labelBackground = new JLabel("");
-        labelBackground.setIcon(new ImageIcon(CollectionPage.class.getResource("/mainPackageGame/images/chinpokomonBackground.jpg")));        labelBackground.setBounds(-25, 0, 655, 420);
-        labelBackground.setBounds(-25, 0, 655, 420);
+        labelBackground.setIcon(new ImageIcon(LoginPage.class.getResource("/mainPackageGame/images/chinpokomonBackground.jpg")));
+        labelBackground.setBounds(-106, -97, 946, 668);
         contentPane.add(labelBackground);
     }
 

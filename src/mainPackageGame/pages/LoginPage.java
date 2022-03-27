@@ -1,7 +1,8 @@
-package mainPackageGame;
+package mainPackageGame.pages;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -23,8 +24,8 @@ public class LoginPage extends JFrame {
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 450);
-        setLocation(700,300);
+        setBounds(100, 100, 800, 600);
+        setLocation(550,200);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -33,92 +34,90 @@ public class LoginPage extends JFrame {
         JLabel labelUser = new JLabel("User");
         labelUser.setForeground(Color.WHITE);
         labelUser.setFont(getFontBySize(20));
-        labelUser.setBounds(65, 67, 61, 36);
+        labelUser.setBounds(185, 315, 61, 36);
         contentPane.add(labelUser);
 
         JLabel labelPassword = new JLabel("Password");
         labelPassword.setForeground(Color.WHITE);
         labelPassword.setFont(getFontBySize(20));
-        labelPassword.setBounds(27, 184, 99, 36);
+        labelPassword.setBounds(147, 405, 99, 36);
         contentPane.add(labelPassword);
 
         textFieldUser = new JTextField();
         textFieldUser.setFont(getFontBySize(17));
-        textFieldUser.setBounds(125, 55, 410, 64);
+        textFieldUser.setBounds(256, 303, 410, 64);
         contentPane.add(textFieldUser);
         textFieldUser.setColumns(10);
 
         textFieldPassword = new JPasswordField();
         textFieldPassword.setFont(getFontBySize(17));
-        textFieldPassword.setBounds(125, 172, 410, 64);
+        textFieldPassword.setBounds(256, 393, 410, 64);
         contentPane.add(textFieldPassword);
 
         JButton buttonLogin = new JButton("Login");
-        buttonLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    user = textFieldUser.getText();
-                    userPassword = textFieldPassword.getText();
+        buttonLogin.addActionListener(e -> {
+            try {
+                user = textFieldUser.getText();
+                userPassword = textFieldPassword.getText();
 
-                    //Statement stm = connection.createStatement();
-                    String sql = "SELECT * FROM userslogin WHERE name='"+user+"' AND password='"+userPassword+"'";
-                    ResultSet rs = getResultSetFromStatement(sql,connection);
+                String sql = "SELECT * FROM userslogin WHERE name='"+user+"' AND password='"+userPassword+"'";
+                ResultSet rs = getResultSetFromStatement(sql,connection);
 
-                    if (rs.next()) {
-                        System.out.println("Se ha hecho login el usuario "+user);
-                        dispose();  // close login page
+                if (rs.next()) {
+                    System.out.println("Se ha hecho login el usuario "+user);
+                    dispose();
 
-                        HomePage hpage = new HomePage(connection,user);
-                        hpage.show();
+                    HomePage hpage = new HomePage(connection,user);
+                    hpage.show();
 
-                    } else {
-                        //si usuario y contraseña están mal
-                        JOptionPane.showMessageDialog(null, "Username or password wrong");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Username or password wrong");
 
-                        textFieldPassword.setText("");
-                        textFieldUser.setText("");
+                    textFieldPassword.setText("");
+                    textFieldUser.setText("");
 
-                    }
-
-
-                } catch (Exception e1){
-                    System.out.println(e1.getMessage());
                 }
+
+
+            } catch (Exception e1){
+                System.out.println(e1.getMessage());
             }
         });
         buttonLogin.setFont(getFontBySize(20));
-        buttonLogin.setBounds(45, 266, 206, 64);
+        buttonLogin.setBounds(99, 475, 200, 60);
         contentPane.add(buttonLogin);
 
         JButton buttonCreateUser = new JButton("Create user");
-        buttonCreateUser.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CreateUserPage createUserPage = new CreateUserPage(connection);
-                createUserPage.show();
-                dispose();
+        buttonCreateUser.addActionListener(e -> {
+            CreateUserPage createUserPage = new CreateUserPage(connection);
+            createUserPage.show();
+            dispose();
 
-            }
         });
         buttonCreateUser.setFont(getFontBySize(20));
-        buttonCreateUser.setBounds(329, 266, 206, 64);
+        buttonCreateUser.setBounds(300, 475, 200, 60);
         contentPane.add(buttonCreateUser);
 
         JButton buttonResetData = new JButton("Reset data");
-        buttonResetData.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                textFieldPassword.setText("");
-                textFieldUser.setText("");
-            }
+        buttonResetData.addActionListener(e -> {
+            textFieldPassword.setText("");
+            textFieldUser.setText("");
         });
         buttonResetData.setFont(getFontBySize(20));
-        buttonResetData.setBounds(186, 341, 206, 64);
+        buttonResetData.setBounds(501, 475, 200, 60);
         contentPane.add(buttonResetData);
 
+        JLabel labelChinpokomonLogo = new JLabel("");
+        labelChinpokomonLogo.setIcon(new ImageIcon(LoginPage.class.getResource("/mainPackageGame/images/chinpokomonLogo.png")));
+        labelChinpokomonLogo.setBounds(118, -11, 548, 368);
+        contentPane.add(labelChinpokomonLogo);
+
         JLabel labelBackground = new JLabel("");
-        labelBackground.setIcon(new ImageIcon(CollectionPage.class.getResource("/mainPackageGame/images/chinpokomonBackground.jpg")));        labelBackground.setBounds(-25, 0, 655, 420);
-        labelBackground.setBounds(-25, 0, 655, 420);
+        labelBackground.setIcon(new ImageIcon(LoginPage.class.getResource("/mainPackageGame/images/chinpokomonBackground.jpg")));
+        labelBackground.setBounds(-106, -97, 946, 668);
         contentPane.add(labelBackground);
+
+
     }
 
     public static Connection getConnection(String database, String usernameDatabase, String passwordUsernameDatabase){
